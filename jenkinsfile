@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone source') {
             steps {
-                git 'https://github.com/<your-username>/flask-cicd-demo.git'
+                https://github.com/TrongNghiaFL1/flask-cicd-demo.git
             }
         }
         stage('Build Docker Image') {
