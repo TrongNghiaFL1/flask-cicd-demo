@@ -10,13 +10,21 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest test_app.py'
+                sh '''
+                    . venv/bin/activate
+                    pytest test_app.py
+                '''
             }
         }
 
@@ -28,9 +36,11 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker stop flask-container || true'
-                sh 'docker rm flask-container || true'
-                sh 'docker run -d --name flask-container -p 5000:5000 flask-cicd-demo'
+                sh '''
+                    docker stop flask-container || true
+                    docker rm flask-container || true
+                    docker run -d --name flask-container -p 5000:5000 flask-cicd-demo
+                '''
             }
         }
     }
